@@ -355,8 +355,10 @@ for epoch_i in range(start_epoch, end_epoch + 1):
         loss_discrepancy = torch.mean(
             torch.pow(torch.mm(x_output, torch.transpose(Phi, 0, 1)) - (Phix-noise/0.5), 2))
 
-        loss_all = loss_discrepancy + 0.1 * (loss_range)
+        loss_same = torch.mean(
+            torch.pow(x_output1 - x_output, 2))
 
+        loss_all = loss_discrepancy + 0.1 * (loss_range) + 0.05 * loss_same
         optimizer.zero_grad()
         loss_all.backward()
         optimizer.step()
